@@ -3,6 +3,7 @@ package file
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"sync"
@@ -52,7 +53,7 @@ func (f *fileStore) Get(key string) (string, error) {
 
 	entry, ok := entries[key]
 	if !ok {
-		return "", fmt.Errorf("")
+		return "", fmt.Errorf("no entry for key %s exists", key)
 	}
 
 	return entry, nil
@@ -65,6 +66,24 @@ func (f *fileStore) load() (map[string]string, error) {
 		return entries, nil
 	}
 	defer file.Close()
+
+	var sb strings.Builder
+	_, err = io.Copy(&sb, file)
+	if err != nil {
+		return entries, err
+	}
+
+	decryptedJSON, err := f.enc.Decrypt(sb.String())
+	if err != nil {
+		return entries, err
+	}
+
+	r := strings.NewReader(decryptedJSON)
+	dec := json.NewDecoder(r)
+	err = dec.Decode(&entries)
+	if err != nil {
+		return entries, err
+	}
 
 	return entries, nil
 }
@@ -93,4 +112,6 @@ func (f *fileStore) saveEntries(entries map[string]string) error {
 	if err != nil  {
 		return err
 	}
+
+	return nil
 }
