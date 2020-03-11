@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/arnarpall/seccy/internal"
+	"github.com/arnarpall/seccy/internal/store"
 )
 
 type memoryStore struct {
@@ -32,7 +32,7 @@ func (m *memoryStore) Get(key string) (string, error) {
 	return v, nil
 }
 
-func InMemory() internal.Store {
+func InMemory() store.Store {
 	return &memoryStore{
 		store: make(map[string]string),
 		mu:    new(sync.Mutex),

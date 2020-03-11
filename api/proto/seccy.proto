@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package seccy;
+
+message SetRequest {
+    string key = 1;
+    string value = 2;
+}
+
+message Empty {
+}
+
+message GetRequest {
+    string key = 1;
+}
+
+message GetResponse {
+    string value = 1;
+}
+
+service Seccy {
+    rpc Set(SetRequest) returns (Empty);
+    rpc Get(GetRequest) returns (GetResponse);
+}

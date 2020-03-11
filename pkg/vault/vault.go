@@ -1,7 +1,7 @@
 package vault
 
 import (
-	"github.com/arnarpall/seccy/internal"
+	store2 "github.com/arnarpall/seccy/internal/store"
 )
 
 type Setter interface {
@@ -13,10 +13,10 @@ type Getter interface {
 }
 
 type Client struct {
-	store internal.Store
+	store store2.Store
 }
 
-func NewClient(store internal.Store) *Client {
+func NewClient(store store2.Store) *Client {
 	return &Client{
 		store: store,
 	}

@@ -8,8 +8,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/arnarpall/seccy/internal"
 	"github.com/arnarpall/seccy/internal/encrypt"
+	"github.com/arnarpall/seccy/internal/store"
 )
 
 type fileStore struct {
@@ -18,7 +18,7 @@ type fileStore struct {
 	mu   sync.Mutex
 }
 
-func NewFileStore(enc encrypt.EncrypterDecrypter, path string) (internal.Store, error) {
+func NewFileStore(enc encrypt.EncrypterDecrypter, path string) (store.Store, error) {
 	return &fileStore{
 		path: path,
 		enc:  enc,
