@@ -19,7 +19,7 @@ func main() {
 	logger := log.New()
 	c, err := client.New(":4040", logger)
 	if err != nil {
-		logger.Fatalf("Unable to connect to seccy server", "error", err)
+		logger.Fatalf("Unable to connect to seccy server, make sure that the server has been started", "error", err)
 	}
 
 	rootCmd.AddCommand(cmd.CreateGetCommand(c))
