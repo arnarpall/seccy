@@ -3,11 +3,11 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/arnarpall/seccy/pkg/vault"
+	"github.com/arnarpall/seccy/pkg/client"
 	"github.com/spf13/cobra"
 )
 
-func CreateSetCommand(setter vault.Setter) *cobra.Command {
+func CreateSetCommand(setter client.Setter) *cobra.Command {
 	return &cobra.Command{
 		Use:   "set",
 		Short: "set a secret value",

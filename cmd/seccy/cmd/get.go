@@ -3,11 +3,11 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/arnarpall/seccy/pkg/vault"
+	"github.com/arnarpall/seccy/pkg/client"
 	"github.com/spf13/cobra"
 )
 
-func CreateGetCommand(getter vault.Getter) *cobra.Command {
+func CreateGetCommand(getter client.Getter) *cobra.Command {
 	return &cobra.Command{
 		Use:   "get",
 		Short: "get a secret",
