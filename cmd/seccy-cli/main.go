@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/arnarpall/seccy/cmd/seccy/cmd"
+	"github.com/arnarpall/seccy/cmd/seccy-cli/cmd"
 	"github.com/arnarpall/seccy/internal/log"
 	"github.com/arnarpall/seccy/pkg/client"
 	"github.com/spf13/cobra"
