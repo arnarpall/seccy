@@ -7,8 +7,10 @@ type Logger struct {
 }
 
 func New() *Logger {
-	logger, _ := zap.NewProduction()
+	c := zap.NewProductionConfig()
+	c.DisableStacktrace = true
+	l, _ := c.Build()
 	return &Logger{
-		SugaredLogger: logger.Sugar(),
+		SugaredLogger: l.Sugar(),
 	}
 }
