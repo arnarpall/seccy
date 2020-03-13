@@ -8,6 +8,7 @@ import (
 	"github.com/arnarpall/seccy/api/proto/seccy"
 	"github.com/arnarpall/seccy/internal/log"
 	"github.com/arnarpall/seccy/internal/store"
+	"github.com/arnarpall/seccy/internal/version"
 	"google.golang.org/grpc"
 )
 
@@ -53,7 +54,11 @@ func (s *seccyServer) Get(ctx context.Context, req *seccy.GetRequest) (*seccy.Ge
 }
 
 func (s *seccyServer) Serve() error {
-	s.logger.Infof("Starting server on address %s", s.address)
+	s.logger.Infow("Starting server",
+		"version", version.BuildVersion,
+		"buildDate", version.BuildDate,
+		"address", s.address)
+
 	lis, err := net.Listen("tcp", s.address)
 	if err != nil {
 		return fmt.Errorf("unable to listen on address %s, %w", s.address, err)
