@@ -3,9 +3,11 @@ package client
 import (
 	"context"
 	"fmt"
+	"io"
 
 	"github.com/arnarpall/seccy/api/proto/seccy"
 	"github.com/arnarpall/seccy/internal/log"
+	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
 )
 
@@ -17,9 +19,14 @@ type Getter interface {
 	Get(key string) (string, error)
 }
 
+type Lister interface {
+	ListKeys() (chan string, error)
+}
+
 type Client interface {
 	Getter
 	Setter
+	Lister
 }
 
 type client struct {
@@ -50,6 +57,30 @@ func (c *client) Set(key, val string) error {
 	_, err := c.seccy.Set(context.TODO(), r)
 	return err
 }
+
+func (c *client) ListKeys() (chan string, error) {
+	c.logger.Debug("Listing all keys")
+	keys, err := c.seccy.ListKeys(context.Background(), &empty.Empty{})
+	ch := make(chan string, 1)
+	if err != nil {
+		return ch, err
+	}
+
+	go func(ch chan <- string, receiver seccy.Seccy_ListKeysClient) {
+	for {
+		in, err := keys.Recv()
+		if err != nil || err == io.EOF {
+			close(ch)
+			return
+		}
+
+		ch <- in.Key
+	}
+	}(ch, keys)
+
+	return ch, nil
+}
+
 
 func New(address string, logger *log.Logger) (Client, error) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure())

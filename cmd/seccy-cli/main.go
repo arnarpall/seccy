@@ -22,6 +22,8 @@ func main() {
 
 	rootCmd.AddCommand(cmd.CreateGetCommand(logger, c))
 	rootCmd.AddCommand(cmd.CreateSetCommand(logger, c))
+	rootCmd.AddCommand(cmd.CreateListKeysCommand(logger, c))
+
 
 	if err := rootCmd.Execute(); err != nil {
 		logger.Fatal(err)

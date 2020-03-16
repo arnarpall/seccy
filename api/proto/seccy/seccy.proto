@@ -19,7 +19,12 @@ message GetResponse {
     string value = 1;
 }
 
+message KeyResponse {
+    string key = 1;
+}
+
 service Seccy {
-    rpc Set(SetRequest) returns (google.protobuf.Empty);
-    rpc Get(GetRequest) returns (GetResponse);
+    rpc Set(SetRequest) returns (google.protobuf.Empty) {};
+    rpc Get(GetRequest) returns (GetResponse) {};
+    rpc ListKeys(google.protobuf.Empty) returns (stream KeyResponse) {};
 }

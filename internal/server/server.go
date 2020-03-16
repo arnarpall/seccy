@@ -54,6 +54,26 @@ func (s *seccyServer) Get(_ context.Context, req *seccy.GetRequest) (*seccy.GetR
 	}, nil
 }
 
+func (s *seccyServer) ListKeys(_ *empty.Empty, stream seccy.Seccy_ListKeysServer) error {
+	s.logger.Info("Listing all keys")
+	keys, err := s.store.ListKeys()
+	if err != nil {
+		s.logger.Errorf("Unable to list all keys %v", err)
+		return err
+	}
+
+	s.logger.Infof("found %d keys", len(keys))
+
+	for _, k := range keys {
+		s.logger.Debugw("sending key", "key", k)
+		if err := stream.Send(&seccy.KeyResponse{Key: k}); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (s *seccyServer) Serve() error {
 	s.logger.Infow("Starting server",
 		"version", version.BuildVersion,

@@ -57,6 +57,20 @@ func (fs *fileStore) Get(key string) (string, error) {
 	return entry, nil
 }
 
+func (fs *fileStore) ListKeys() ([]string, error) {
+	entries, err := fs.load()
+	if err != nil {
+		return []string{}, err
+	}
+
+	keys := make([]string, 0, len(entries))
+	for k := range entries {
+		keys = append(keys, k)
+	}
+
+	return keys, nil
+}
+
 func (fs *fileStore) load() (map[string]string, error) {
 	file, err := os.Open(fs.path)
 	entries := make(map[string]string)
