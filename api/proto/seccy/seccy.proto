@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 option go_package = "api/proto/seccy";
 
 package seccy;
@@ -7,9 +9,6 @@ package seccy;
 message SetRequest {
     string key = 1;
     string value = 2;
-}
-
-message Empty {
 }
 
 message GetRequest {
@@ -21,6 +20,6 @@ message GetResponse {
 }
 
 service Seccy {
-    rpc Set(SetRequest) returns (Empty);
+    rpc Set(SetRequest) returns (google.protobuf.Empty);
     rpc Get(GetRequest) returns (GetResponse);
 }

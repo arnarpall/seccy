@@ -15,6 +15,9 @@ server:
 run-server: server
 	cmd/seccy-service/seccy-service
 
+run-server-dev: server
+	cmd/seccy-service/seccy-service --encryption-key test --store-path /tmp/test.vault
+
 proto:
 	- protoc -I api/proto ./api/proto/seccy/seccy.proto --go_out=plugins=grpc:.
 
