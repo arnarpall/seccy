@@ -25,7 +25,7 @@ func NewFileStore(enc encrypt.EncrypterDecrypter, path string) (store.Store, err
 
 func (fs *fileStore) Set(key, val string) error {
 	fs.mu.Lock()
-	defer  fs.mu.Unlock()
+	defer fs.mu.Unlock()
 
 	entries, err := fs.load()
 	if err != nil {
@@ -42,7 +42,7 @@ func (fs *fileStore) Set(key, val string) error {
 
 func (fs *fileStore) Get(key string) (string, error) {
 	fs.mu.Lock()
-	defer  fs.mu.Unlock()
+	defer fs.mu.Unlock()
 
 	entries, err := fs.load()
 	if err != nil {
@@ -95,7 +95,7 @@ func (fs *fileStore) load() (map[string]string, error) {
 
 func (fs *fileStore) saveEntries(entries map[string]string) error {
 	f, err := os.OpenFile(fs.path, os.O_RDWR|os.O_CREATE, 0755)
-	if err != nil  {
+	if err != nil {
 		return err
 	}
 	defer f.Close()

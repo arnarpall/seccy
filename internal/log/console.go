@@ -18,4 +18,3 @@ func Console() *Logger {
 	}
 	return logger
 }
-

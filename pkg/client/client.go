@@ -20,7 +20,7 @@ type Getter interface {
 }
 
 type Lister interface {
-	ListKeys() (chan string, error)
+	ListKeys() (<-chan string, error)
 }
 
 type Client interface {
@@ -30,7 +30,7 @@ type Client interface {
 }
 
 type client struct {
-	seccy seccy.SeccyClient
+	seccy  seccy.SeccyClient
 	logger *log.Logger
 }
 
@@ -50,7 +50,7 @@ func (c *client) Get(key string) (string, error) {
 func (c *client) Set(key, val string) error {
 	c.logger.Debugw("Setting key value", "key", key, "value", val)
 	r := &seccy.SetRequest{
-		Key:key,
+		Key:   key,
 		Value: val,
 	}
 
@@ -58,39 +58,38 @@ func (c *client) Set(key, val string) error {
 	return err
 }
 
-func (c *client) ListKeys() (chan string, error) {
+func (c *client) ListKeys() (<-chan string, error) {
 	c.logger.Debug("Listing all keys")
 	keys, err := c.seccy.ListKeys(context.Background(), &empty.Empty{})
-	ch := make(chan string, 1)
 	if err != nil {
-		return ch, err
+		return nil, err
 	}
 
-	go func(ch chan <- string, receiver seccy.Seccy_ListKeysClient) {
-	for {
-		in, err := keys.Recv()
-		if err != nil || err == io.EOF {
-			close(ch)
-			return
+	ch := make(chan string, 1)
+	go func(ch chan<- string, receiver seccy.Seccy_ListKeysClient) {
+		for {
+			in, err := keys.Recv()
+			if err != nil || err == io.EOF {
+				close(ch)
+				return
+			}
+
+			ch <- in.Key
 		}
-
-		ch <- in.Key
-	}
 	}(ch, keys)
 
 	return ch, nil
 }
-
 
 func New(address string, logger *log.Logger) (Client, error) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
 		return nil, fmt.Errorf("unable to connect to server %s, %w", address, err)
 	}
-	
+
 	c := seccy.NewSeccyClient(conn)
 	return &client{
-		seccy: c,
+		seccy:  c,
 		logger: logger,
 	}, nil
 }

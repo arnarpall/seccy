@@ -105,7 +105,8 @@ func (c *client) DecryptReader(r io.Reader) (io.Reader, error) {
 		return nil, errors.New("decrypt: unable to read the full iv")
 	}
 	stream := cipher.NewCFBDecrypter(c.block, iv)
-	return &cipher.StreamReader{S: stream, R: r}, nil}
+	return &cipher.StreamReader{S: stream, R: r}, nil
+}
 
 func newCipherBlock(key string) (cipher.Block, error) {
 	h := md5.New()

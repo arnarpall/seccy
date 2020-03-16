@@ -14,8 +14,8 @@ func TestEncryptText(t *testing.T) {
 	require.NoError(t, err)
 
 	greeting := "hello"
-	cipher, err  := enc.Encrypt(greeting)
- 	require.NoError(t, err)
+	cipher, err := enc.Encrypt(greeting)
+	require.NoError(t, err)
 	assert.NotEmpty(t, cipher)
 
 	decrypt, err := enc.Decrypt(cipher)
@@ -28,7 +28,7 @@ func TestEncryptWriter(t *testing.T) {
 	require.NoError(t, err)
 
 	encryptBuf := new(bytes.Buffer)
-	w, err  := enc.EncryptWriter(encryptBuf)
+	w, err := enc.EncryptWriter(encryptBuf)
 	require.NoError(t, err)
 	assert.NotNil(t, w)
 

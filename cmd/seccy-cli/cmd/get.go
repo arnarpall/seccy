@@ -9,7 +9,7 @@ import (
 type getCommand struct {
 	logger *log.Logger
 	getter client.Getter
-	key string
+	key    string
 }
 
 func CreateGetCommand(logger *log.Logger, getter client.Getter) *cobra.Command {
