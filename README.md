@@ -1,6 +1,8 @@
 # seccy
 Seccy is a key-value server where the keys and values are stored in an encrypted datastore
 
+This little thing was started from the https://gophercises.com/
+
 Seccy exposes gRPC endpoints for setting values and getting a value for a key.
 
 Protobuf client is stored in api/proto/seccy
