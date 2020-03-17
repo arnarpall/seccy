@@ -24,8 +24,8 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           args:
-            - --encryption-key="arnar"
-            - --store-path="/data/seccy/arnar.vault"
+            - --encryption-key={{.Values.deployment.encryptionKey}}
+            - --store-path={{.Values.deployment.storagePath}}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
