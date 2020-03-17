@@ -51,7 +51,7 @@ func (fs *fileStore) Get(key string) (string, error) {
 
 	entry, ok := entries[key]
 	if !ok {
-		return "", fmt.Errorf("no entry for key %s exists", key)
+		return "", fmt.Errorf("no entry for key %s exists, %w", key, store.ErrKeyNotFound)
 	}
 
 	return entry, nil

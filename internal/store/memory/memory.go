@@ -12,6 +12,10 @@ type memoryStore struct {
 	mu    *sync.Mutex
 }
 
+func (m *memoryStore) ListKeys() ([]string, error) {
+	panic("implement me")
+}
+
 func (m *memoryStore) Set(key, val string) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()

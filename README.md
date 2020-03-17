@@ -26,8 +26,7 @@ Example client
     err = client.Set("this-is", "awesome")
     if err != nil {
       panic("unable to set key")
-    }
-    
+    } 
     val, err = client.Get("this-is")
     if err != nil {
       panic("unable to get key")

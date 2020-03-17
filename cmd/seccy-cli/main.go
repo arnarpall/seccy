@@ -1,11 +1,15 @@
 package main
 
 import (
+	"os"
+
 	"github.com/arnarpall/seccy/cmd/seccy-cli/cmd"
 	"github.com/arnarpall/seccy/internal/log"
 	"github.com/arnarpall/seccy/pkg/client"
 	"github.com/spf13/cobra"
 )
+
+const DefaultServerAddress = ":4040"
 
 var rootCmd = &cobra.Command{
 	Use:   "seccy",
@@ -15,7 +19,12 @@ var rootCmd = &cobra.Command{
 func main() {
 	logger := log.Console()
 
-	c, err := client.New(":4040", logger)
+	serverAddress := os.Getenv("SECCY_SERVER")
+	if serverAddress == "" {
+		serverAddress = DefaultServerAddress
+	}
+
+	c, err := client.New(serverAddress, logger)
 	if err != nil {
 		logger.Fatalf("Unable to connect to seccy server, make sure that the server has been started", "error", err)
 	}

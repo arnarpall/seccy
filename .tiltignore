@@ -1,0 +1,4 @@
+*.md
+.tiltignore
+.gitignore
+cmd/seccy-cli

@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 
@@ -32,21 +33,25 @@ func New(address string, logger *log.Logger, store store.Store) Server {
 }
 
 func (s *seccyServer) Set(_ context.Context, req *seccy.SetRequest) (*empty.Empty, error) {
-	s.logger.Infof("Setting key %s to value %s", req.Key, req.Value)
+	s.logger.Infow("Setting key value", "key", req.Key, "value", req.Value)
 	err := s.store.Set(req.Key, req.Value)
 	if err != nil {
-		s.logger.Errorf("Unable to set value %s for key %s %s, %v", req.Value, req.Key, err)
+		s.logger.Errorw("Unable to set key value", "key", req.Key, "value", req.Value, "error", err)
+		return &empty.Empty{}, errors.New("unable to connect to store")
 	}
 
 	return &empty.Empty{}, err
 }
 
 func (s *seccyServer) Get(_ context.Context, req *seccy.GetRequest) (*seccy.GetResponse, error) {
-	s.logger.Infof("Getting value for key %s", req.Key)
+	s.logger.Infow("Getting value", "key", req.Key)
 	val, err := s.store.Get(req.Key)
 	if err != nil {
-		s.logger.Errorf("Unable to get value for key ting value for key %s, %v", req.Key, err)
-		return nil, err
+		s.logger.Errorw("Unable to get value for key", "key", req.Key, "error", err)
+
+		if errors.Is(err, store.ErrKeyNotFound) {
+			return nil, err
+		}
 	}
 
 	return &seccy.GetResponse{
@@ -58,7 +63,7 @@ func (s *seccyServer) ListKeys(_ *empty.Empty, stream seccy.Seccy_ListKeysServer
 	s.logger.Info("Listing all keys")
 	keys, err := s.store.ListKeys()
 	if err != nil {
-		s.logger.Errorf("Unable to list all keys %v", err)
+		s.logger.Errorw("Unable to list all keys", "error", err)
 		return err
 	}
 

@@ -14,10 +14,9 @@ COPY . .
 RUN go install \
     -a \
     -trimpath \
-    -ldflags ${ld_flags} \
+    #-ldflags ${ld_flags} \
     ./...
 
 FROM alpine:latest
 COPY --from=build /go/bin/seccy-service ./
-EXPOSE 4040/tcp
 ENTRYPOINT ["./seccy-service"]

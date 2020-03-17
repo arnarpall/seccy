@@ -41,6 +41,7 @@ func main() {
 		logger.Fatal(err)
 	}
 
+	logger.Infow("Using an encrypted filestore", "path", opts.storePath)
 	store, err := file.NewFileStore(enc, opts.storePath)
 	if err != nil {
 		logger.Fatal(err)
