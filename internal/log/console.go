@@ -7,6 +7,7 @@ import (
 
 func Console() *Logger {
 	lc := zap.NewDevelopmentConfig()
+	lc.Level = zap.NewAtomicLevelAt(zapcore.InfoLevel)
 	lc.DisableStacktrace = true
 	lc.DisableCaller = true
 	lc.EncoderConfig = zapcore.EncoderConfig{

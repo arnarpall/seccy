@@ -47,15 +47,6 @@ func main() {
 		logger.Fatal(err)
 	}
 
-	f, err := os.OpenFile(opts.storePath, os.O_RDWR|os.O_CREATE, 0755)
-	if err != nil {
-		logger.Fatal(err)
-	}
-	_, err = f.WriteString("this-rocks")
-	if err != nil {
-		logger.Fatal(err)
-	}
-
 	s := server.New(opts.listenAddress, logger, store)
 	if err := s.Serve(); err != nil {
 		logger.Fatalw("Unable to start server", "error", err)

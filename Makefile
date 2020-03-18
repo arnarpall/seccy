@@ -24,6 +24,9 @@ proto:
 cli:
 	cd cmd/seccy-cli/ && go build -ldflags ${LD_FLAGS}
 
+install:
+	cd cmd/seccy-cli/ && go install -ldflags ${LD_FLAGS}
+
 test:
 	go test ./...
 

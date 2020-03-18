@@ -38,6 +38,6 @@ func (s *listKeysCommand) run() {
 	}
 
 	for key := range keyChan {
-		s.logger.Infof("key %s", key)
+		s.logger.Info(key)
 	}
 }
