@@ -1,3 +1,5 @@
+![Go](https://github.com/arnarpall/seccy/workflows/Go/badge.svg)
+
 # seccy
 Seccy is a key-value server where the keys and values are stored in an encrypted datastore
 
