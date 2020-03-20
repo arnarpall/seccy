@@ -68,7 +68,7 @@ func (c *client) ListKeys() (<-chan string, error) {
 	ch := make(chan string, 1)
 	go func(ch chan<- string, receiver seccy.Seccy_ListKeysClient) {
 		for {
-			in, err := keys.Recv()
+			in, err := receiver.Recv()
 			if err != nil || err == io.EOF {
 				close(ch)
 				return
@@ -90,6 +90,6 @@ func New(address string, logger *log.Logger) (Client, error) {
 	c := seccy.NewSeccyClient(conn)
 	return &client{
 		seccy:  c,
-		logger: logger,
+		logger: logger.With("component", "client"),
 	}, nil
 }

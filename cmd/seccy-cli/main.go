@@ -1,15 +1,13 @@
 package main
 
 import (
-	"os"
-
 	"github.com/arnarpall/seccy/cmd/seccy-cli/cmd"
+	"github.com/arnarpall/seccy/internal/env"
 	"github.com/arnarpall/seccy/internal/log"
+	"github.com/arnarpall/seccy/internal/server"
 	"github.com/arnarpall/seccy/pkg/client"
 	"github.com/spf13/cobra"
 )
-
-const DefaultServerAddress = ":4040"
 
 var rootCmd = &cobra.Command{
 	Use:   "seccy",
@@ -19,10 +17,7 @@ var rootCmd = &cobra.Command{
 func main() {
 	logger := log.Console()
 
-	serverAddress := os.Getenv("SECCY_SERVER")
-	if serverAddress == "" {
-		serverAddress = DefaultServerAddress
-	}
+	serverAddress := env.GetEnvOrDefault("SECCY_SERVER", server.DefaultServerAddress)
 
 	c, err := client.New(serverAddress, logger)
 	if err != nil {

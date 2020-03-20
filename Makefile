@@ -9,14 +9,20 @@ LD_FLAGS := "-X github.com/arnarpall/seccy/internal/version.BuildVersion=${VERSI
 build:
 	go build -ldflags ${LD_FLAGS} ./...
 
-server:
+service:
 	cd cmd/seccy-service/ && go build -ldflags ${LD_FLAGS}
 
-run-server: server
+run-service: service
 	cmd/seccy-service/seccy-service
 
-run-server-dev: server
+run-service-dev: service
 	cmd/seccy-service/seccy-service --encryption-key test --store-path /tmp/test.vault
+
+rest-api:
+	cd cmd/seccy-rest-api/ && go build -ldflags ${LD_FLAGS}
+
+run-rest-api: rest-api
+	cmd/seccy-rest-api/seccy-rest-api
 
 proto:
 	- protoc -I api/proto ./api/proto/seccy/seccy.proto --go_out=plugins=grpc:.
