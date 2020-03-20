@@ -1,5 +1,5 @@
 .idea
 
-seccy-cli
-seccy-service
-seccy-rest-api
+cmd/seccy-cli/seccy-cli
+cmd/seccy-service/seccy-service
+cmd/seccy-rest-api/seccy-rest-api
