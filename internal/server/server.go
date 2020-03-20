@@ -12,6 +12,8 @@ import (
 	"github.com/arnarpall/seccy/internal/version"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
 type seccyServer struct {
@@ -92,6 +94,8 @@ func (s *seccyServer) Serve() error {
 
 	gs := grpc.NewServer()
 	seccy.RegisterSeccyServer(gs, s)
+	hs := health.NewServer()
+	healthpb.RegisterHealthServer(gs, hs)
 	if err := gs.Serve(lis); err != nil {
 		return fmt.Errorf("error serving grpc connection, %w", err)
 	}

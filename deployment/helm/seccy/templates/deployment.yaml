@@ -37,14 +37,13 @@ spec:
               containerPort: 4040
               protocol: TCP
           livenessProbe:
-            tcpSocket:
-              port: 4040
-            #initialDelaySeconds: 5
+            exec:
+              command: ["./grpc_health_probe", "-addr=:4040"]
+            initialDelaySeconds: 5
           readinessProbe:
-            tcpSocket:
-              port: 4040
-            #initialDelaySeconds: 15
-            #periodSeconds: 20
+            exec:
+              command: ["./grpc_health_probe", "-addr=:4040"]
+            initialDelaySeconds: 10
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
