@@ -11,6 +11,8 @@ spec:
       {{- include "seccy-rest-api.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         {{- include "seccy-rest-api.selectorLabels" . | nindent 8 }}
     spec:
